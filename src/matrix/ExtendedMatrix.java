@@ -15,24 +15,24 @@ public class ExtendedMatrix<E> extends AbstractMatrix<E>
         this.b = b;
     }
 
-    public int getN()
+    public int getHeight()
     {
-        return a.getN();
+        return a.getHeight();
     }
 
-    public int getM()
+    public int getWidth()
     {
-        return a.getM() + b.getM();
+        return a.getWidth() + b.getWidth();
     }
 
-    public E get(int i, int j)
+    public E getElement(int i, int j)
     {
-        if (1 <= i && i <= a.getN())
+        if (1 <= i && i <= a.getHeight())
         {
-            if (1 <= j && j <= a.getM())
-                return a.get(i, j);
-            else if (a.getM() < j && j <= a.getM() + b.getM())
-                return b.get(i, j - a.getM());
+            if (1 <= j && j <= a.getWidth())
+                return a.getElement(i, j);
+            else if (a.getWidth() < j && j <= a.getWidth() + b.getWidth())
+                return b.getElement(i, j - a.getWidth());
             else throw new MatrixIndexOutOfBoundsException(this, i, j);
         }
         else throw new MatrixIndexOutOfBoundsException(this, i, j);
@@ -40,12 +40,12 @@ public class ExtendedMatrix<E> extends AbstractMatrix<E>
 
     public void set(int i, int j, E value)
     {
-        if (1 <= i && i <= a.getN())
+        if (1 <= i && i <= a.getHeight())
         {
-            if (1 <= j && j <= a.getM())
+            if (1 <= j && j <= a.getWidth())
                 a.set(i, j, value);
-            else if (a.getM() < j && j <= a.getM() + b.getM())
-                b.set(i, j - a.getN(), value);
+            else if (a.getWidth() < j && j <= a.getWidth() + b.getWidth())
+                b.set(i, j - a.getHeight(), value);
             else throw new MatrixIndexOutOfBoundsException(this, i, j);
         }
         else throw new MatrixIndexOutOfBoundsException(this, i, j);

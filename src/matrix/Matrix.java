@@ -8,10 +8,10 @@ import java.io.PrintWriter;
  */
 public interface Matrix<E>
 {
-    int getN();
-    int getM();
+    int getHeight();
+    int getWidth();
 
-    E get(int i, int j);
+    E getElement(int i, int j);
     void set(int i, int j, E value);
 
     void swapRows(int i1, int i2);

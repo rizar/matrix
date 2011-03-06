@@ -42,7 +42,7 @@ public class GaussSolver
         log("Matrix a: ", a);
         log("Matrix b: ", b);
 
-        for (int i = 1; i < a.getN(); i++)
+        for (int i = 1; i < a.getHeight(); i++)
         {
             BigDecimalMatrix ext = new BigDecimalMatrix(
                                    new ExtendedMatrix<BigDecimal>(
@@ -50,27 +50,27 @@ public class GaussSolver
 
             log("Step " + i + " extended matrix:", ext);
 
-            for (int j = 1; j < ext.getN(); j++)
-                if (!ext.get(1, j).equals(ZERO))
+            for (int j = 1; j < ext.getHeight(); j++)
+                if (!ext.getElement(1, j).equals(ZERO))
                 {
                     ext.swapRows(1, j);
                     break;
                 }
 
-            ext.multiplyRow(1, ONE.divide(ext.get(1, 1), scale, RoundingMode.HALF_UP));
+            ext.multiplyRow(1, ONE.divide(ext.getElement(1, 1), scale, RoundingMode.HALF_UP));
             ext.zeroFirstColumn();
 
             log("Step " + i + " extended matrix after transformations:", ext);
         }
 
-        ArrayMatrix<BigDecimal> x = new ArrayMatrix<BigDecimal>(a.getM(), b.getM());
-        for (int j = 1; j <= b.getM(); j++)
-            for (int i = a.getM(); i >= 1; i--)
+        ArrayMatrix<BigDecimal> x = new ArrayMatrix<BigDecimal>(a.getWidth(), b.getWidth());
+        for (int j = 1; j <= b.getWidth(); j++)
+            for (int i = a.getWidth(); i >= 1; i--)
             {
-                x.set(i, j, b.get(i, j));
-                for (int k = i + 1; k <= a.getM(); k++)
-                    x.set(i, j, x.get(i, j).subtract(x.get(k, j).multiply(a.get(i, k))).setScale(scale, RoundingMode.HALF_UP));
-                x.set(i, j, x.get(i, j).divide(a.get(i, i), scale, RoundingMode.HALF_UP));
+                x.set(i, j, b.getElement(i, j));
+                for (int k = i + 1; k <= a.getWidth(); k++)
+                    x.set(i, j, x.getElement(i, j).subtract(x.getElement(k, j).multiply(a.getElement(i, k))).setScale(scale, RoundingMode.HALF_UP));
+                x.set(i, j, x.getElement(i, j).divide(a.getElement(i, i), scale, RoundingMode.HALF_UP));
             }
 
         log("Matrix x:", x);

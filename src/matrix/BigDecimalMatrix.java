@@ -22,8 +22,8 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
     public BigDecimalMatrix(int n, int m, BigDecimal scalar, int scale)
     {
         this.m = new ArrayMatrix<BigDecimal>(n, m);
-        for (int i = 1; i <= this.m.getN(); i++)
-            for (int j = 1; j <= this.m.getM(); j++)
+        for (int i = 1; i <= this.m.getHeight(); i++)
+            for (int j = 1; j <= this.m.getWidth(); j++)
                 this.m.set(i, j, i == j ? scalar : BigDecimal.ZERO);
         this.scale = scale;
     }
@@ -31,40 +31,40 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
     public BigDecimalMatrix multiply(BigDecimalMatrix that)
     {
         //TODO check input
-        BigDecimalMatrix res = new BigDecimalMatrix(this.getN(), that.getM(), BigDecimal.ZERO, scale);
-        for (int i = 1; i <= res.getN(); i++)
-            for (int j = 1; j <= res.getM(); j++)
-                for (int k = 1; k <= this.getM(); k++)
-                    res.set(i, j, res.get(i, j).add(this.get(i, k).multiply(that.get(k, j))).setScale(scale, RoundingMode.HALF_UP));
+        BigDecimalMatrix res = new BigDecimalMatrix(this.getHeight(), that.getWidth(), BigDecimal.ZERO, scale);
+        for (int i = 1; i <= res.getHeight(); i++)
+            for (int j = 1; j <= res.getWidth(); j++)
+                for (int k = 1; k <= this.getWidth(); k++)
+                    res.set(i, j, res.getElement(i, j).add(this.getElement(i, k).multiply(that.getElement(k, j))).setScale(scale, RoundingMode.HALF_UP));
         return res;
     }
 
     public BigDecimalMatrix subtract(BigDecimalMatrix that)
     {
-        BigDecimalMatrix res = new BigDecimalMatrix(getN(), getM(), BigDecimal.ZERO, scale);
-        for (int i = 1; i <= getN(); i++)
-            for (int j = 1; j <= getM(); j++)
-                res.set(i, j, get(i, j).subtract(that.get(i, j)).setScale(scale, RoundingMode.HALF_UP));
+        BigDecimalMatrix res = new BigDecimalMatrix(getHeight(), getWidth(), BigDecimal.ZERO, scale);
+        for (int i = 1; i <= getHeight(); i++)
+            for (int j = 1; j <= getWidth(); j++)
+                res.set(i, j, getElement(i, j).subtract(that.getElement(i, j)).setScale(scale, RoundingMode.HALF_UP));
         return res;
     }
 
     public void multiplyRow(int i, BigDecimal value)
     {
-        for (int j = 1; j <= m.getM(); j++)
-            m.set(i, j, m.get(i, j).multiply(value).setScale(scale, RoundingMode.HALF_UP));
+        for (int j = 1; j <= m.getWidth(); j++)
+            m.set(i, j, m.getElement(i, j).multiply(value).setScale(scale, RoundingMode.HALF_UP));
     }
 
     public void multiplyRowAndAddToRow(int i1, int i2, BigDecimal value)
     {
-        for (int j = 1; j <= m.getM(); j++)
-            m.set(i2, j, m.get(i1, j).multiply(value).add(m.get(i2, j)).setScale(scale, RoundingMode.HALF_UP));
+        for (int j = 1; j <= m.getWidth(); j++)
+            m.set(i2, j, m.getElement(i1, j).multiply(value).add(m.getElement(i2, j)).setScale(scale, RoundingMode.HALF_UP));
     }
 
     public void zeroFirstColumn()
     {
-        for (int i = 2; i <= m.getN(); i++)
+        for (int i = 2; i <= m.getHeight(); i++)
         {
-            BigDecimal k = m.get(i, 1).divide(m.get(1, 1), scale, RoundingMode.HALF_UP).negate();
+            BigDecimal k = m.getElement(i, 1).divide(m.getElement(1, 1), scale, RoundingMode.HALF_UP).negate();
             multiplyRowAndAddToRow(1, i, k);
         }
     }
@@ -72,25 +72,25 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
     public BigDecimal squaredEuclidianNorm()
     {
         BigDecimal res = BigDecimal.ZERO;
-        for (int i = 1; i <= getN(); i++)
-            for (int j = 1; j <= getM(); j++)
-                res = res.add(get(i, j).multiply(get(i, j)));
+        for (int i = 1; i <= getHeight(); i++)
+            for (int j = 1; j <= getWidth(); j++)
+                res = res.add(getElement(i, j).multiply(getElement(i, j)));
         return res;
     }
 
-    public int getN()
+    public int getHeight()
     {
-        return m.getN();
+        return m.getHeight();
     }
 
-    public int getM()
+    public int getWidth()
     {
-        return m.getM();
+        return m.getWidth();
     }
 
-    public BigDecimal get(int i, int j)
+    public BigDecimal getElement(int i, int j)
     {
-        return m.get(i, j);
+        return m.getElement(i, j);
     }
 
     public void set(int i, int j, BigDecimal value)
@@ -101,11 +101,11 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
     @Override
     public void printlnMatrix(PrintWriter pw)
     {
-        for (int i = 1; i <= getN(); i++)
-            for (int j = 1; j <= getM(); j++)
+        for (int i = 1; i <= getHeight(); i++)
+            for (int j = 1; j <= getWidth(); j++)
             {
-                pw.print(get(i, j).toPlainString());
-                if (j < getM())
+                pw.print(getElement(i, j).toPlainString());
+                if (j < getWidth())
                     pw.print(' ');
                 else
                     pw.println();

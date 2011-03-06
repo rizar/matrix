@@ -11,7 +11,7 @@ class MatrixIndexOutOfBoundsException extends RuntimeException
 
     public MatrixIndexOutOfBoundsException(Matrix matrix, int i, int j)
     {
-        super("n = " + matrix.getN() + " m = " + matrix.getM() + " i = " + i + " j = " + j);
+        super("n = " + matrix.getHeight() + " m = " + matrix.getWidth() + " i = " + i + " j = " + j);
         this.matrix = matrix;
         this.i = i;
         this.j = j;

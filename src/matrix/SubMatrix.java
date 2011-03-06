@@ -19,19 +19,19 @@ class SubMatrix<E> extends AbstractMatrix<E>
         this.j2 = j2;
     }
 
-    public int getN()
+    public int getHeight()
     {
         return i2 - i1 + 1;
     }
     
-    public int getM()
+    public int getWidth()
     {
         return j2 - j1 + 1;
     }
 
-    public E get(int i, int j)
+    public E getElement(int i, int j)
     {
-        return base.get(i1 + i - 1, j1 + j - 1);
+        return base.getElement(i1 + i - 1, j1 + j - 1);
     }
 
     public void set(int i, int j, E value)

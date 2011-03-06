@@ -41,17 +41,17 @@ public class ArrayMatrix<E> extends AbstractMatrix<E> implements Cloneable
         return new ArrayMatrix(n, m, dataCopy);
     }
 
-    public int getN()
+    public int getHeight()
     {
         return n;
     }
 
-    public int getM()
+    public int getWidth()
     {
         return m;
     }
 
-    public E get(int i, int j)
+    public E getElement(int i, int j)
     {
         if (1 <= i && i <= n && 1 <= j && j <= m)
             return data[i - 1][j - 1];
