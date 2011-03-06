@@ -34,8 +34,8 @@ class SubMatrix<E> extends AbstractMatrix<E>
         return base.getElement(i1 + i - 1, j1 + j - 1);
     }
 
-    public void set(int i, int j, E value)
+    public void setElement(int i, int j, E value)
     {
-        base.set(i1 + i - 1, j1 + j - 1, value);
+        base.setElement(i1 + i - 1, j1 + j - 1, value);
     }
 }

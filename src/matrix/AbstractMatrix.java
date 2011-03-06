@@ -13,8 +13,8 @@ abstract public class AbstractMatrix<E> implements Matrix<E>
         for (int j = 1; j <= getWidth(); j++)
         {
             E t = getElement(i2, j);
-            set(i2, j, getElement(i1, j));
-            set(i1, j, t);
+            setElement(i2, j, getElement(i1, j));
+            setElement(i1, j, t);
         }
     }
 

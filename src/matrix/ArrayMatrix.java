@@ -59,7 +59,7 @@ public class ArrayMatrix<E> extends AbstractMatrix<E> implements Cloneable
             throw new MatrixIndexOutOfBoundsException(this, i, j);
     }
 
-    public void set(int i, int j, E value)
+    public void setElement(int i, int j, E value)
     {
         if (1 <= i && i <= n && 1 <= j && j <= m)
             data[i - 1][j - 1] = value;

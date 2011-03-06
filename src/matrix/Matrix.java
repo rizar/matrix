@@ -12,7 +12,7 @@ public interface Matrix<E>
     int getWidth();
 
     E getElement(int i, int j);
-    void set(int i, int j, E value);
+    void setElement(int i, int j, E value);
 
     void swapRows(int i1, int i2);
 

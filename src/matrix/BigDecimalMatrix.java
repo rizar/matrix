@@ -24,7 +24,7 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
         this.m = new ArrayMatrix<BigDecimal>(n, m);
         for (int i = 1; i <= this.m.getHeight(); i++)
             for (int j = 1; j <= this.m.getWidth(); j++)
-                this.m.set(i, j, i == j ? scalar : BigDecimal.ZERO);
+                this.m.setElement(i, j, i == j ? scalar : BigDecimal.ZERO);
         this.scale = scale;
     }
 
@@ -35,7 +35,7 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
         for (int i = 1; i <= res.getHeight(); i++)
             for (int j = 1; j <= res.getWidth(); j++)
                 for (int k = 1; k <= this.getWidth(); k++)
-                    res.set(i, j, res.getElement(i, j).add(this.getElement(i, k).multiply(that.getElement(k, j))).setScale(scale, RoundingMode.HALF_UP));
+                    res.setElement(i, j, res.getElement(i, j).add(this.getElement(i, k).multiply(that.getElement(k, j))).setScale(scale, RoundingMode.HALF_UP));
         return res;
     }
 
@@ -44,20 +44,20 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
         BigDecimalMatrix res = new BigDecimalMatrix(getHeight(), getWidth(), BigDecimal.ZERO, scale);
         for (int i = 1; i <= getHeight(); i++)
             for (int j = 1; j <= getWidth(); j++)
-                res.set(i, j, getElement(i, j).subtract(that.getElement(i, j)).setScale(scale, RoundingMode.HALF_UP));
+                res.setElement(i, j, getElement(i, j).subtract(that.getElement(i, j)).setScale(scale, RoundingMode.HALF_UP));
         return res;
     }
 
     public void multiplyRow(int i, BigDecimal value)
     {
         for (int j = 1; j <= m.getWidth(); j++)
-            m.set(i, j, m.getElement(i, j).multiply(value).setScale(scale, RoundingMode.HALF_UP));
+            m.setElement(i, j, m.getElement(i, j).multiply(value).setScale(scale, RoundingMode.HALF_UP));
     }
 
     public void multiplyRowAndAddToRow(int i1, int i2, BigDecimal value)
     {
         for (int j = 1; j <= m.getWidth(); j++)
-            m.set(i2, j, m.getElement(i1, j).multiply(value).add(m.getElement(i2, j)).setScale(scale, RoundingMode.HALF_UP));
+            m.setElement(i2, j, m.getElement(i1, j).multiply(value).add(m.getElement(i2, j)).setScale(scale, RoundingMode.HALF_UP));
     }
 
     public void zeroFirstColumn()
@@ -93,9 +93,9 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
         return m.getElement(i, j);
     }
 
-    public void set(int i, int j, BigDecimal value)
+    public void setElement(int i, int j, BigDecimal value)
     {
-        m.set(i, j, value);
+        m.setElement(i, j, value);
     }
 
     @Override

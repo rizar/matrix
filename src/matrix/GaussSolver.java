@@ -67,10 +67,10 @@ public class GaussSolver
         for (int j = 1; j <= b.getWidth(); j++)
             for (int i = a.getWidth(); i >= 1; i--)
             {
-                x.set(i, j, b.getElement(i, j));
+                x.setElement(i, j, b.getElement(i, j));
                 for (int k = i + 1; k <= a.getWidth(); k++)
-                    x.set(i, j, x.getElement(i, j).subtract(x.getElement(k, j).multiply(a.getElement(i, k))).setScale(scale, RoundingMode.HALF_UP));
-                x.set(i, j, x.getElement(i, j).divide(a.getElement(i, i), scale, RoundingMode.HALF_UP));
+                    x.setElement(i, j, x.getElement(i, j).subtract(x.getElement(k, j).multiply(a.getElement(i, k))).setScale(scale, RoundingMode.HALF_UP));
+                x.setElement(i, j, x.getElement(i, j).divide(a.getElement(i, i), scale, RoundingMode.HALF_UP));
             }
 
         log("Matrix x:", x);

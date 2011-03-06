@@ -38,14 +38,14 @@ public class ExtendedMatrix<E> extends AbstractMatrix<E>
         else throw new MatrixIndexOutOfBoundsException(this, i, j);
     }
 
-    public void set(int i, int j, E value)
+    public void setElement(int i, int j, E value)
     {
         if (1 <= i && i <= a.getHeight())
         {
             if (1 <= j && j <= a.getWidth())
-                a.set(i, j, value);
+                a.setElement(i, j, value);
             else if (a.getWidth() < j && j <= a.getWidth() + b.getWidth())
-                b.set(i, j - a.getHeight(), value);
+                b.setElement(i, j - a.getHeight(), value);
             else throw new MatrixIndexOutOfBoundsException(this, i, j);
         }
         else throw new MatrixIndexOutOfBoundsException(this, i, j);
