@@ -1,70 +1,119 @@
 package matrix;
 
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
  *
- * @author Admin
+ * @author Dmitry Bogdanov
  */
 public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
 {
-    private Matrix<BigDecimal> m;
+    private Matrix<BigDecimal> matrix;
     private int scale;
 
-    public BigDecimalMatrix(Matrix<BigDecimal> matrix, int scale)
+    /**
+     * Constructs zero matrix.
+     * @param height
+     * @param width
+     * @param scale
+     */
+    public BigDecimalMatrix(int height, int width, int scale)
     {
-        this.m = matrix;
+        matrix = new ArrayMatrix<BigDecimal>(height, width);
+        for (int i = 1; i <= height; i++)
+            for (int j = 1; j <= width; j++)
+                matrix.setElement(i, j, BigDecimal.ZERO);
         this.scale = scale;
     }
 
-    public BigDecimalMatrix(int n, int m, BigDecimal scalar, int scale)
+    /**
+     * Constructs scalar matrix.
+     * @param size
+     * @param scalar
+     * @param scale
+     */
+    public BigDecimalMatrix(int size, BigDecimal scalar, int scale)
     {
-        this.m = new ArrayMatrix<BigDecimal>(n, m);
-        for (int i = 1; i <= this.m.getHeight(); i++)
-            for (int j = 1; j <= this.m.getWidth(); j++)
-                this.m.setElement(i, j, i == j ? scalar : BigDecimal.ZERO);
+        matrix = new ArrayMatrix<BigDecimal>(size, size);
+        for (int i = 1; i <= matrix.getHeight(); i++)
+            for (int j = 1; j <= matrix.getWidth(); j++)
+                matrix.setElement(i, j, i == j ? scalar : BigDecimal.ZERO);
         this.scale = scale;
     }
 
-    public BigDecimalMatrix multiply(BigDecimalMatrix that)
+    /**
+     * If makeCopy, construct matrix shallow copy, else uses matrix data.
+     * @param matrix
+     * @param scale
+     */
+    public BigDecimalMatrix(Matrix<BigDecimal> matrix, int scale, boolean makeCopy)
     {
-        //TODO check input
-        BigDecimalMatrix res = new BigDecimalMatrix(this.getHeight(), that.getWidth(), BigDecimal.ZERO, scale);
+        this.matrix = makeCopy ? new ArrayMatrix<BigDecimal>(matrix) : matrix;
+        this.scale = scale;
+    }
+
+    /**
+     * If makeCopy, construct matrix shallow copy, else uses matrix data.
+     * @param matrix
+     */
+    public BigDecimalMatrix(BigDecimalMatrix matrix, boolean makeCopy)
+    {
+        this.matrix = makeCopy ? new ArrayMatrix<BigDecimal>(matrix) : matrix;
+        this.scale = matrix.scale;
+    }
+
+    public void setScale(int scale)
+    {
+        this.scale = scale;
+        for (int i = 1; i <= getHeight(); i++)
+            for (int j = 1; j <= getWidth(); j++)
+                setElement(i, j, getElement(i, j).setScale(scale));
+    }
+
+    public int getScale()
+    {
+        return scale;
+    }
+
+    public BigDecimalMatrix multiply(BigDecimalMatrix matrix)
+    {
+        if (getWidth() != matrix.getHeight())
+            throw new InconsistentMatrixesException(this, matrix);
+        BigDecimalMatrix res = new BigDecimalMatrix(getHeight(), matrix.getWidth(), scale);
         for (int i = 1; i <= res.getHeight(); i++)
             for (int j = 1; j <= res.getWidth(); j++)
-                for (int k = 1; k <= this.getWidth(); k++)
-                    res.setElement(i, j, res.getElement(i, j).add(this.getElement(i, k).multiply(that.getElement(k, j))).setScale(scale, RoundingMode.HALF_UP));
+                for (int k = 1; k <= getWidth(); k++)
+                    res.setElement(i, j, res.getElement(i, j).add(getElement(i, k).multiply(matrix.getElement(k, j))).setScale(scale, RoundingMode.HALF_UP));
         return res;
     }
 
-    public BigDecimalMatrix subtract(BigDecimalMatrix that)
+    public BigDecimalMatrix subtract(BigDecimalMatrix matrix)
     {
-        BigDecimalMatrix res = new BigDecimalMatrix(getHeight(), getWidth(), BigDecimal.ZERO, scale);
+        BigDecimalMatrix res = new BigDecimalMatrix(getHeight(), getWidth(), scale);
         for (int i = 1; i <= getHeight(); i++)
             for (int j = 1; j <= getWidth(); j++)
-                res.setElement(i, j, getElement(i, j).subtract(that.getElement(i, j)).setScale(scale, RoundingMode.HALF_UP));
+                res.setElement(i, j, getElement(i, j).subtract(matrix.getElement(i, j)).setScale(scale, RoundingMode.HALF_UP));
         return res;
     }
 
     public void multiplyRow(int i, BigDecimal value)
     {
-        for (int j = 1; j <= m.getWidth(); j++)
-            m.setElement(i, j, m.getElement(i, j).multiply(value).setScale(scale, RoundingMode.HALF_UP));
+        for (int j = 1; j <= matrix.getWidth(); j++)
+            matrix.setElement(i, j, matrix.getElement(i, j).multiply(value).setScale(scale, RoundingMode.HALF_UP));
     }
 
     public void multiplyRowAndAddToRow(int i1, int i2, BigDecimal value)
     {
-        for (int j = 1; j <= m.getWidth(); j++)
-            m.setElement(i2, j, m.getElement(i1, j).multiply(value).add(m.getElement(i2, j)).setScale(scale, RoundingMode.HALF_UP));
+        for (int j = 1; j <= matrix.getWidth(); j++)
+            matrix.setElement(i2, j, matrix.getElement(i1, j).multiply(value).add(matrix.getElement(i2, j)).setScale(scale, RoundingMode.HALF_UP));
     }
 
     public void zeroFirstColumn()
     {
-        for (int i = 2; i <= m.getHeight(); i++)
+        for (int i = 2; i <= matrix.getHeight(); i++)
         {
-            BigDecimal k = m.getElement(i, 1).divide(m.getElement(1, 1), scale, RoundingMode.HALF_UP).negate();
+            BigDecimal k = matrix.getElement(i, 1).divide(matrix.getElement(1, 1), scale, RoundingMode.HALF_UP).negate();
             multiplyRowAndAddToRow(1, i, k);
         }
     }
@@ -80,35 +129,38 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
 
     public int getHeight()
     {
-        return m.getHeight();
+        return matrix.getHeight();
     }
 
     public int getWidth()
     {
-        return m.getWidth();
+        return matrix.getWidth();
     }
 
     public BigDecimal getElement(int i, int j)
     {
-        return m.getElement(i, j);
+        return matrix.getElement(i, j);
     }
 
     public void setElement(int i, int j, BigDecimal value)
     {
-        m.setElement(i, j, value);
+        matrix.setElement(i, j, value);
     }
 
     @Override
-    public void printlnMatrix(PrintWriter pw)
+    public String toString()
     {
+        StringBuilder sb = new StringBuilder();
         for (int i = 1; i <= getHeight(); i++)
+        {
             for (int j = 1; j <= getWidth(); j++)
             {
-                pw.print(getElement(i, j).toPlainString());
+                sb.append(getElement(i, j).toPlainString());
                 if (j < getWidth())
-                    pw.print(' ');
-                else
-                    pw.println();
+                    sb.append(" ");
             }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }

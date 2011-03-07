@@ -1,69 +1,84 @@
 package matrix;
 
-import java.util.Arrays;
-
 /**
  *
- * @author Admin
+ * @author Dmitry Bogdanov
  */
 public class ArrayMatrix<E> extends AbstractMatrix<E> implements Cloneable
 {
-    private int n, m;
-    private E [][] data;
+    private int height, width;
+    private E[][] data;
 
-    public ArrayMatrix(int n, int m)
+    /**
+     * Constructs matrix with all null references.
+     * @param height
+     * @param width
+     */
+    public ArrayMatrix(int height, int width)
     {
-        this.n = n;
-        this.m = m;
-        data = (E [][]) new Object[n][m];
+        this.height = height;
+        this.width = width;
+        data = (E[][]) new Object[height][width];
     }
 
-    public ArrayMatrix(int n, int m, E [][] elements)
+    /**
+     * Constructs matrix with data from elements.
+     * @param height
+     * @param width
+     * @param elements
+     */
+    public ArrayMatrix(int height, int width, E[][] elements)
     {
-       this.n = n;
-       this.m = m;
-       data = elements;
+        this.height = height;
+        this.width = width;
+        data = elements;
     }
 
-    public ArrayMatrix(ArrayMatrix<E> matrix)
+    /**
+     * Constructs shallow copy of given matrix
+     * @param matrix
+     */
+    public ArrayMatrix(Matrix<E> matrix)
     {
-        n = matrix.n;
-        m = matrix.m;
-        data = matrix.data;
-    }
-
-    @Override
-    public ArrayMatrix<E> clone()
-    {
-        E [][] dataCopy = (E [][]) new Object [n][];
-        for (int i = 0; i < n; i++)
-            dataCopy[i] = Arrays.copyOf(data[i], m);
-        return new ArrayMatrix(n, m, dataCopy);
+        height = matrix.getHeight();
+        width = matrix.getWidth();
+        data = (E[][]) new Object[height][width];
+        for (int i = 0; i < height; i++)
+            for (int j = 0; j < width; j++)
+                data[i][j] = matrix.getElement(i + 1, j + 1);
     }
 
     public int getHeight()
     {
-        return n;
+        return height;
     }
 
     public int getWidth()
     {
-        return m;
+        return width;
     }
 
     public E getElement(int i, int j)
     {
-        if (1 <= i && i <= n && 1 <= j && j <= m)
+        try
+        {
             return data[i - 1][j - 1];
-        else
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
             throw new MatrixIndexOutOfBoundsException(this, i, j);
+        }
     }
 
     public void setElement(int i, int j, E value)
     {
-        if (1 <= i && i <= n && 1 <= j && j <= m)
+        try
+        {
             data[i - 1][j - 1] = value;
-        else
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
             throw new MatrixIndexOutOfBoundsException(this, i, j);
+        }
     }
 }

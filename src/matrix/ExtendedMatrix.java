@@ -2,15 +2,16 @@ package matrix;
 
 /**
  *
- * @author Admin
+ * @author Dmitry Bogdanov
  */
-public class ExtendedMatrix<E> extends AbstractMatrix<E>
+class ExtendedMatrix<E> extends AbstractMatrix<E>
 {
     private Matrix<E> a, b;
 
     public ExtendedMatrix(Matrix<E> a, Matrix<E> b)
     {
-        //TODO check input
+        if (a.getHeight() != b.getHeight())
+            throw new InconsistentMatrixesException(a, b);
         this.a = a;
         this.b = b;
     }
@@ -49,11 +50,5 @@ public class ExtendedMatrix<E> extends AbstractMatrix<E>
             else throw new MatrixIndexOutOfBoundsException(this, i, j);
         }
         else throw new MatrixIndexOutOfBoundsException(this, i, j);
-    }
-
-    @Override
-    public Matrix getSubMatrix(int i1, int j1, int i2, int j2)
-    {
-        return new SubMatrix(this, i1, j1, i2, j2);
     }
 }

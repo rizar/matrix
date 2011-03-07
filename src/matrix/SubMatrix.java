@@ -2,7 +2,7 @@ package matrix;
 
 /**
  *
- * @author Admin
+ * @author Dmitry Bogdanov
  */
 class SubMatrix<E> extends AbstractMatrix<E>
 {

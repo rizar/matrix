@@ -2,18 +2,21 @@ package matrix;
 
 /**
  *
- * @author Admin
+ * @author Dmitry Bogdanov
  */
 class MatrixIndexOutOfBoundsException extends RuntimeException
 {
-    public Matrix matrix;
-    public int i, j;
-
     public MatrixIndexOutOfBoundsException(Matrix matrix, int i, int j)
     {
-        super("n = " + matrix.getHeight() + " m = " + matrix.getWidth() + " i = " + i + " j = " + j);
-        this.matrix = matrix;
-        this.i = i;
-        this.j = j;
+        super("width = " + matrix.getHeight() + " height = " + matrix.getWidth() + " i = " + i + " j = " + j);
+    }
+
+    public MatrixIndexOutOfBoundsException()
+    {
+    }
+
+    public MatrixIndexOutOfBoundsException(String message)
+    {
+        super(message);
     }
 }

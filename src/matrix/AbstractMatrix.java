@@ -1,10 +1,8 @@
 package matrix;
 
-import java.io.PrintWriter;
-
 /**
  *
- * @author Admin
+ * @author Dmitry Bogdanov
  */
 abstract public class AbstractMatrix<E> implements Matrix<E>
 {
@@ -18,26 +16,35 @@ abstract public class AbstractMatrix<E> implements Matrix<E>
         }
     }
 
-    public Matrix<E> getSubMatrix(int i, int j)
+    public Matrix<E> subMatrix(int i, int j)
     {
-        return getSubMatrix(i, j, getHeight(), getWidth());
+        return subMatrix(i, j, getHeight(), getWidth());
     }
 
-    public Matrix<E> getSubMatrix(int i1, int j1, int i2, int j2)
+    public Matrix<E> subMatrix(int i1, int j1, int i2, int j2)
     {
         return new SubMatrix<E>(this, i1, j1, i2, j2);
     }
 
-    public void printlnMatrix(PrintWriter pw)
+    public Matrix<E> extendedMatrix(Matrix matrix)
     {
+        return new ExtendedMatrix(this, matrix);
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
         for (int i = 1; i <= getHeight(); i++)
+        {
             for (int j = 1; j <= getWidth(); j++)
             {
-                pw.print(getElement(i, j).toString());
+                sb.append(getElement(i, j));
                 if (j < getWidth())
-                    pw.print(' ');
-                else
-                    pw.println();
+                    sb.append(" ");
             }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }
