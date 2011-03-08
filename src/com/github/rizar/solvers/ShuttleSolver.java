@@ -38,8 +38,8 @@ public class ShuttleSolver extends AbstractSolver
         int n = b.getWidth();
         BigDecimalVectorRow xi = new BigDecimalVectorRow(n, scale);
         BigDecimalVectorRow eta = new BigDecimalVectorRow(n, scale);
-        xi.setElement(2, c.getElement(2).divide(b.getElement(2), scale, RoundingMode.HALF_UP));
-        eta.setElement(2, d.getElement(2).divide(b.getElement(2), scale, RoundingMode.HALF_UP).
+        xi.setElement(2, c.getElement(1).divide(b.getElement(1), scale, RoundingMode.HALF_UP));
+        eta.setElement(2, d.getElement(1).divide(b.getElement(1), scale, RoundingMode.HALF_UP).
                 negate());
         for (int i = 2; i < n; i++)
         {
@@ -56,7 +56,7 @@ public class ShuttleSolver extends AbstractSolver
 
         BigDecimalVectorColumn x = new BigDecimalVectorColumn(n, scale);
         BigDecimal numerator = d.getElement(n).subtract(a.getElement(n).multiply(eta.
-                getElement(n))).setScale(scale);
+                getElement(n))).setScale(scale, RoundingMode.HALF_UP);
         BigDecimal denominator = a.getElement(n).multiply(xi.getElement(n)).
                 subtract(b.getElement(n)).setScale(scale, RoundingMode.HALF_UP);
         x.setElement(n, numerator.divide(denominator, scale, RoundingMode.HALF_UP));

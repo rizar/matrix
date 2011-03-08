@@ -144,7 +144,7 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
 
     public void setElement(int i, int j, BigDecimal value)
     {
-        matrix.setElement(i, j, value);
+        matrix.setElement(i, j, value.setScale(scale, RoundingMode.HALF_UP));
     }
 
     @Override
