@@ -2,7 +2,7 @@ package com.github.rizar.matrix;
 
 /**
  *
- * @author Dmitry Bogdanov
+ * @author Rizar
  */
 class SubMatrix<E> extends AbstractMatrix<E>
 {

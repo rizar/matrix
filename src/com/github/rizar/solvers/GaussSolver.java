@@ -7,9 +7,9 @@ import static java.math.BigDecimal.*;
 
 /**
  *
- * @author Dmitry Bogdanov
+ * @author Rizar
  */
-public class GaussSolver
+public class GaussSolver extends AbstractSolver
 {
     private BigDecimalMatrix a, b;
     private int scale;
@@ -20,23 +20,7 @@ public class GaussSolver
         this.b = new BigDecimalMatrix(b, scale, true);
         this.scale = scale;
     }
-    private PrintWriter logWriter = null;
-
-    public void setLogWriter(PrintWriter logWriter)
-    {
-        this.logWriter = logWriter;
-    }
-
-    private void log(String message, BigDecimalMatrix matrix)
-    {
-        if (logWriter == null)
-            return;
-        logWriter.println(message);
-        logWriter.println(matrix);
-        logWriter.println();
-        logWriter.flush();
-    }
-
+    
     public BigDecimalMatrix solve()
     {
         log("Matrix a: ", a);

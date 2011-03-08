@@ -8,13 +8,13 @@ import com.github.rizar.solvers.GaussSolver;
 
 /**
  *
- * @author Dmitry Bogdanov
+ * @author Rizar
  */
 public class GaussRunner
 {
-    private int SCALE = 6;
+    public final static int SCALE = 6;
 
-    BigDecimalMatrix getA(int alpha)
+    private BigDecimalMatrix getA(int alpha)
     {
         double ad [][] = new double [4][4];
         ad[0][0] = 1; ad[0][1] = 2; ad[0][2] = 3; ad[0][3] = 4;
@@ -25,10 +25,10 @@ public class GaussRunner
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
                 a[i][j] = BigDecimal.valueOf(ad[i][j]).setScale(SCALE);
-        return new BigDecimalMatrix(new ArrayMatrix<BigDecimal>(4, 4, a), SCALE, false);
+        return new BigDecimalMatrix(new ArrayMatrix<BigDecimal>(a), SCALE, false);
     }
 
-    BigDecimalMatrix getB(int alpha)
+    private BigDecimalMatrix getB(int alpha)
     {
         double bd [][] = new double [4][1];
         bd[0][0] = alpha;
@@ -38,7 +38,7 @@ public class GaussRunner
         BigDecimal b [][] = new BigDecimal[4][1];
         for (int i = 0; i < 4; i++)
             b[i][0] = BigDecimal.valueOf(bd[i][0]).setScale(SCALE);
-        return new BigDecimalMatrix(new ArrayMatrix<BigDecimal>(4, 1, b), SCALE, false);
+        return new BigDecimalMatrix(new ArrayMatrix<BigDecimal>(b), SCALE, false);
     }
 
     public void doGauss()

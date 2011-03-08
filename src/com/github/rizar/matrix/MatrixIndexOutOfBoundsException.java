@@ -2,7 +2,7 @@ package com.github.rizar.matrix;
 
 /**
  *
- * @author Dmitry Bogdanov
+ * @author Rizar
  */
 class MatrixIndexOutOfBoundsException extends RuntimeException
 {

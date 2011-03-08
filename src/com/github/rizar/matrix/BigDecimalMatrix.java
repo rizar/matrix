@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 
 /**
  *
- * @author Dmitry Bogdanov
+ * @author Rizar
  */
 public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
 {
@@ -159,7 +159,8 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
                 if (j < getWidth())
                     sb.append(" ");
             }
-            sb.append("\n");
+            if (i < getHeight())
+                sb.append("\n");
         }
         return sb.toString();
     }

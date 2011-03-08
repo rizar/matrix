@@ -2,7 +2,7 @@ package com.github.rizar.matrix;
 
 /**
  *
- * @author Dmitry Bogdanov
+ * @author Rizar
  */
 abstract public class AbstractMatrix<E> implements Matrix<E>
 {
@@ -43,7 +43,8 @@ abstract public class AbstractMatrix<E> implements Matrix<E>
                 if (j < getWidth())
                     sb.append(" ");
             }
-            sb.append("\n");
+            if (i < getHeight())
+                sb.append("\n");
         }
         return sb.toString();
     }

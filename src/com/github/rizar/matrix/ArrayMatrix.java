@@ -2,7 +2,7 @@ package com.github.rizar.matrix;
 
 /**
  *
- * @author Dmitry Bogdanov
+ * @author Rizar
  */
 public class ArrayMatrix<E> extends AbstractMatrix<E> implements Cloneable
 {
@@ -27,10 +27,10 @@ public class ArrayMatrix<E> extends AbstractMatrix<E> implements Cloneable
      * @param width
      * @param elements
      */
-    public ArrayMatrix(int height, int width, E[][] elements)
+    public ArrayMatrix(E[][] elements)
     {
-        this.height = height;
-        this.width = width;
+        this.height = elements.length;
+        this.width = elements[0].length;
         data = elements;
     }
 
