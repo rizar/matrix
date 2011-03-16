@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- *
+ *\
  * @author Rizar
  */
 public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>

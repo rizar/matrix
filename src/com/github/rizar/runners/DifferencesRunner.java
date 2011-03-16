@@ -60,7 +60,7 @@ public class DifferencesRunner
         }
         d.setElement(N, BigDecimal.valueOf(U_AT_B));
 
-        PrintWriter pw = new PrintWriter("result.txt");
+        PrintWriter pw = new PrintWriter(System.out);
 
         ShuttleSolver solver = new ShuttleSolver(a, b, c, d, SCALE);
         solver.setLogWriter(pw);

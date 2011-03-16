@@ -1,9 +1,8 @@
 package com.github.rizar.solvers;
 
 import java.math.RoundingMode;
-import java.io.PrintWriter;
 import com.github.rizar.matrix.BigDecimalMatrix;
-import static java.math.BigDecimal.*;
+import java.math.BigDecimal;
 
 /**
  *
@@ -35,27 +34,19 @@ public class GaussSolver extends AbstractSolver
             log("Step " + i + " extended matrix:", ext);
 
             for (int j = 1; j < ext.getHeight(); j++)
-                if (!ext.getElement(1, j).equals(ZERO))
+                if (!ext.getElement(1, j).equals(BigDecimal.ZERO))
                 {
                     ext.swapRows(1, j);
                     break;
                 }
 
-            ext.multiplyRow(1, ONE.divide(ext.getElement(1, 1), scale, RoundingMode.HALF_UP));
+            ext.multiplyRow(1, BigDecimal.ONE.divide(ext.getElement(1, 1), scale, RoundingMode.HALF_UP));
             ext.zeroFirstColumn();
 
             log("Step " + i + " extended matrix after transformations:", ext);
         }
 
-        BigDecimalMatrix x = new BigDecimalMatrix(a.getWidth(), b.getWidth(), scale);
-        for (int j = 1; j <= b.getWidth(); j++)
-            for (int i = a.getWidth(); i >= 1; i--)
-            {
-                x.setElement(i, j, b.getElement(i, j));
-                for (int k = i + 1; k <= a.getWidth(); k++)
-                    x.setElement(i, j, x.getElement(i, j).subtract(x.getElement(k, j).multiply(a.getElement(i, k))).setScale(scale, RoundingMode.HALF_UP));
-                x.setElement(i, j, x.getElement(i, j).divide(a.getElement(i, i), scale, RoundingMode.HALF_UP));
-            }
+        BigDecimalMatrix x = new UpperTriangularSolver(a, b, scale).solve();
 
         log("Matrix x:", x);
 
