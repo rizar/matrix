@@ -6,6 +6,7 @@ package com.github.rizar.solvers;
 
 import com.github.rizar.matrix.BigDecimalMatrix;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 /**
  *
@@ -27,6 +28,15 @@ abstract public class AbstractSolver
         logWriter.println(message);
         logWriter.println(matrix);
         logWriter.println();
+        logWriter.flush();
+    }
+
+    protected void log(String message, BigDecimal number)
+    {
+        if (logWriter == null)
+            return;
+        logWriter.println(message);
+        logWriter.println(number);
         logWriter.flush();
     }
 }

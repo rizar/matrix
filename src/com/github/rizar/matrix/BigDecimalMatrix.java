@@ -2,6 +2,7 @@ package com.github.rizar.matrix;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Scanner;
 
 /**
  *\
@@ -76,6 +77,15 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
         return scale;
     }
 
+    public BigDecimalMatrix multiply(BigDecimal scalar)
+    {
+        BigDecimalMatrix res = new BigDecimalMatrix(this, true);
+        for (int i = 1; i <= res.getHeight(); i++)
+            for (int j = 1; j <= res.getWidth(); j++)
+                res.setElement(i, j, res.getElement(i, j).multiply(scalar).setScale(scale, RoundingMode.HALF_UP));
+        return res;
+    }
+
     public BigDecimalMatrix multiply(BigDecimalMatrix matrix)
     {
         if (getWidth() != matrix.getHeight())
@@ -88,6 +98,15 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
         return res;
     }
 
+    public BigDecimalMatrix add(BigDecimalMatrix matrix)
+    {
+        BigDecimalMatrix res = new BigDecimalMatrix(getHeight(), getWidth(), scale);
+        for (int i = 1; i <= getHeight(); i++)
+            for (int j = 1; j <= getWidth(); j++)
+                res.setElement(i, j, getElement(i, j).add(matrix.getElement(i, j)).setScale(scale, RoundingMode.HALF_UP));
+        return res;
+    }
+    
     public BigDecimalMatrix subtract(BigDecimalMatrix matrix)
     {
         BigDecimalMatrix res = new BigDecimalMatrix(getHeight(), getWidth(), scale);
@@ -116,6 +135,20 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
             BigDecimal k = matrix.getElement(i, 1).divide(matrix.getElement(1, 1), scale, RoundingMode.HALF_UP).negate();
             multiplyRowAndAddToRow(1, i, k);
         }
+    }
+
+    public BigDecimal cubicNorm()
+    {
+        BigDecimal max = BigDecimal.ZERO;
+        for (int i = 1; i <= getHeight(); i++)
+        {
+            BigDecimal cur = BigDecimal.ZERO;
+            for (int j = 1; j <= getWidth(); j++)
+                cur = cur.add(getElement(i, j).abs());
+            if (cur.compareTo(max) == 1)
+                max = cur;
+        }
+        return max;
     }
 
     public BigDecimal squaredEuclidianNorm()
@@ -163,5 +196,14 @@ public class BigDecimalMatrix extends AbstractMatrix<BigDecimal>
                 sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public static BigDecimalMatrix scan(Scanner sc, int height, int width, int scale)
+    {
+        BigDecimalMatrix res = new BigDecimalMatrix(height, width, scale);
+        for (int i = 1; i <= height; i++)
+            for (int j = 1; j <= width; j++)
+                res.setElement(i, j, sc.nextBigDecimal());
+        return res;
     }
 }
